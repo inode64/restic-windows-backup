@@ -18,16 +18,6 @@ $Script:ResticStateLastMaintenance = $null
 $Script:ResticStateLastDeepMaintenance = $null
 $Script:ResticStateMaintenanceCounter = $null
 
-# Mounts drive in which we will save the backup
-function MountDriveBackup {
-	Write-Output "Montando unidad USB"
-}
-
-# Unmount drive where we saved the backup
-function UnmountDriveBackup {
-	Write-Output "Desmontando unidad USB"
-}
-
 # Returns all drive letters which exactly match the serial number, drive label, or drive name of 
 # the input parameter. Returns all drives if no input parameter is provided.
 # inspiration: https://stackoverflow.com/questions/31088930/combine-get-disk-info-and-logicaldisk-info-in-powershell
@@ -86,6 +76,7 @@ function Set-BackupState {
 # unlock the repository if need be
 function Invoke-Unlock {
     Param($SuccessLog, $ErrorLog)
+
     $locks = & $ResticExe list locks --no-lock -q 3>&1 2>> $ErrorLog
     if($locks.Length -gt 0) {
         # unlock the repository (assumes this machine is the only one that will ever use it)
@@ -425,7 +416,7 @@ function Invoke-Main {
         exit
     }
 
-	MountDriveBackup
+	ToDoBefore
 
     $error_count = 0;
     $attempt_count = $GlobalRetryAttempts
@@ -472,7 +463,7 @@ function Invoke-Main {
         }
     }    
 
-	UnmountDriveBackup
+	ToDoAfter
     Set-BackupState
 
     # cleanup older log files
