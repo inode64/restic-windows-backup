@@ -63,6 +63,20 @@ function Get-Drives {
     }
 }
 
+# To do before the backup is executed
+function ExecuteBeforeBackup {
+	if ($BeforeBackup -ne "") {
+		$BeforeBackup
+    }
+}
+
+# To do after the backup is executed
+function ExecuteAfterBackup {
+	if ($AfterBackup -ne "") {
+		$AfterBackup
+	}
+}
+
 # restore backup state from disk
 function Get-BackupState {
     if(Test-Path $StateFile) {
@@ -416,7 +430,7 @@ function Invoke-Main {
         exit
     }
 
-	ToDoBefore
+	ExecuteBeforeBackup
 
     $error_count = 0;
     $attempt_count = $GlobalRetryAttempts
@@ -463,7 +477,7 @@ function Invoke-Main {
         }
     }    
 
-	ToDoAfter
+	ExecuteAfterBackup
     Set-BackupState
 
     # cleanup older log files

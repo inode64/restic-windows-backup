@@ -10,6 +10,8 @@ $LogRetentionDays = 30
 $InternetTestAttempts = 10
 $GlobalRetryAttempts = 4
 $IgnoreMissingBackupSources = $false
+$BeforeBackup = ""
+$AfterBackup = ""
 
 # maintenance configuration
 $SnapshotMaintenanceEnabled = $true
@@ -34,13 +36,3 @@ $BackupSources["C:\"] = @(
 #$BackupSources["DRIVE_LABEL_NAME_OR_SERIAL_NUMBER"] = @(
 #    'FolderName'
 #)
-# To do before backup (preparations for the disks, mounting of drives...)
-function ToDoBefore {
-	Write-Output "Initiating pre backup tasks..."
-	# Actions
-}
-# To do after backup (cleaning tasks, unmounting drives...)
-function ToDoAfter {
-	Write-Output "Initiating post backup tasks..."
-	# Actions
-}
